@@ -5,6 +5,14 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    // 플레이어랑 충돌하면
+    // 에너미 오브젝트 파괴
+    // 플레이어 Hp 를 에너미의 Atk 만큼 감소
+
+    public float HP = 5;
+
+    int Atk = 3;
+
     [SerializeField] private float moveDistanceMin = 2;
     [SerializeField] private float moveDistanceMax = 4;
     [SerializeField] private float moveDelay = 1;
@@ -17,11 +25,11 @@ public class Enemy : MonoBehaviour
     
     // Start is called before the first frame update
     void Start()
-    {        
-        StartCoroutine(nameof(MoveEnemy));
-
+    { 
         spawnAreaHalfWidth = GameManager.Instance.SpawnAreaHalfWidth;
         spawnAreaHalfHeight = GameManager.Instance.SpawnAreaHalfHeight;
+
+        StartCoroutine(nameof(MoveEnemy));
     }
 
     void Update()
@@ -64,5 +72,15 @@ public class Enemy : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, 70 * Time.deltaTime);
         }
 
+    }
+
+    public void TakeDamage(float damage)
+    {
+        HP -= damage;
+
+        if (HP < 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

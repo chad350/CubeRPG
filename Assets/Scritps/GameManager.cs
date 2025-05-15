@@ -32,7 +32,9 @@ public class GameManager : MonoBehaviour
     public float SpawnAreaHalfHeight => spawnAreaHalfHeight;
 
 
-    private GameObject Player;
+    private GameObject player;
+    public GameObject Player => player;
+
     private List<GameObject> Enemies = new List<GameObject>();
 
 
@@ -52,7 +54,7 @@ public class GameManager : MonoBehaviour
 
     void SpawnPlayer()
     {
-        Player = Instantiate(PlayerPref);
+        player = Instantiate(PlayerPref);
     }
 
     void SpawnMonster()
