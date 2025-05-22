@@ -80,6 +80,9 @@ public class Enemy : MonoBehaviour
 
         if (HP < 0)
         {
+            GameManager.Instance.Score += 10;
+            UIManager.Instance.uiMain.UpdateSocre(GameManager.Instance.Score);
+
             Destroy(gameObject);
         }
     }

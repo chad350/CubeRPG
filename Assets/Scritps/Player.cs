@@ -18,6 +18,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Time.timeScale < 1)
+            return;
+
         MovePlayer();
         RotatePlayer();
         CheckAttack();
