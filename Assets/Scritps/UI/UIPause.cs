@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIPause : MonoBehaviour
+public class UIPause : UIBase
 {
     // 옵션창 열기
     [SerializeField] private Button btnOption;
@@ -20,20 +21,26 @@ public class UIPause : MonoBehaviour
         btnResume.onClick.AddListener(CloseUI);
     }
 
-    public void OpenOptionUI()
-    { 
+    private void OnEnable()
+    {
+        Time.timeScale = 0;
+    }
 
-        UIManager.Instance.uiOption.gameObject.SetActive(true);
+    private void OnDisable()
+    {
+        Time.timeScale = 1;
+    }
+
+    public void OpenOptionUI()
+    {
+        var uiOption = UIManager.Instance.GetUI<UIOption>();
+        uiOption.OpenUI();
+        
     }
 
     public void OpenGameQuitPopup()
     {
-        UIManager.Instance.uiQuitPopup.gameObject.SetActive(true);
-    }
-
-    public void CloseUI()
-    {
-        Time.timeScale = 1;
-        gameObject.SetActive(false);
+        var uiQuitPopup = UIManager.Instance.GetUI<UIQuitPopup>();
+        uiQuitPopup.OpenUI();
     }
 }

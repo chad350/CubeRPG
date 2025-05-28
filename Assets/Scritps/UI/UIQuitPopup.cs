@@ -1,21 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIOption : MonoBehaviour
+public class UIQuitPopup : UIBase
 {
-    // ´Ý´Â ¹öÆ°
+    [SerializeField] private Button btnOK;
     [SerializeField] private Button btnClose;
 
     // Start is called before the first frame update
     void Start()
     {
+        btnOK.onClick.AddListener(Confirm);
         btnClose.onClick.AddListener(CloseUI);
     }
 
-    private void CloseUI()
+    private void Confirm()
     {
-        gameObject.SetActive(false);
+        SceneManager.LoadScene("Intro");
     }
 }

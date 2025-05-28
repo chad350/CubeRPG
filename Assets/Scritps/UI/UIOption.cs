@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIQuitPopup : MonoBehaviour
+public class UIOption : UIBase
 {
     // ´Ý´Â ¹öÆ°
     [SerializeField] private Button btnClose;
@@ -12,10 +12,5 @@ public class UIQuitPopup : MonoBehaviour
     void Start()
     {
         btnClose.onClick.AddListener(CloseUI);
-    }
-
-    private void CloseUI()
-    {
-        gameObject.SetActive(false);
     }
 }

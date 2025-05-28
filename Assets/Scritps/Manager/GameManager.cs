@@ -2,27 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    // 싱글톤 
-    // 이 게임을 진행하면서 단 하나만 필요할떄
-    // 어디서든지 편하게 접근하게 함
-
-    public static GameManager Instance;
-
     public int Score;
 
     // 플레이어 정보
     [Header("플레이어")]
-    [SerializeField] private GameObject PlayerPref;
+    private string PlayerPrefName = "Player";
 
     // 몬스터 정보
     [Header("몬스터")]
-    [SerializeField] private int MonsterSpawnCount = 10;
-    [SerializeField] private GameObject EnemyPref;
-    [SerializeField] private float spawnAreaWidth = 40;
-    [SerializeField] private float spawnAreaHeight = 40;
-    [SerializeField] private float spawnAreaMargin = 2;
+    private string EnemyPrefName = "Enemy";
+    private int MonsterSpawnCount = 10;
+    private float spawnAreaWidth = 40;
+    private float spawnAreaHeight = 40;
+    private float spawnAreaMargin = 2;
 
     private float spawnAreaHalfWidth;
     private float spawnAreaHalfHeight;
@@ -40,27 +34,20 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-
         spawnAreaHalfWidth = (spawnAreaWidth / 2) - spawnAreaMargin;
         spawnAreaHalfHeight = (spawnAreaHeight / 2) - spawnAreaMargin;
     }
 
-    private void Start()
-    {        
-        SpawnPlayer();
-        SpawnMonster();
+    public void SpawnPlayer()
+    {
+        var playerRes = Resources.Load<GameObject>(PlayerPrefName);
+        player = Instantiate(playerRes);
     }
 
-    void SpawnPlayer()
+    public void SpawnMonster()
     {
-        player = Instantiate(PlayerPref);
-    }
-
-    void SpawnMonster()
-    {
-        
-
+        Enemies.Clear();
+        var enemyRes = Resources.Load<GameObject>(EnemyPrefName);
         for (int i = 0; i < MonsterSpawnCount; i++)
         {
             //                                    -18                   18
@@ -69,10 +56,10 @@ public class GameManager : MonoBehaviour
 
             float spawnRotY = Random.Range(0, 360);
 
-            Vector3 spawnPos = new Vector3(spawnPosX, EnemyPref.transform.position.y, spawnPosZ);
+            Vector3 spawnPos = new Vector3(spawnPosX, enemyRes.transform.position.y, spawnPosZ);
             Quaternion spawnRot = Quaternion.Euler(0, spawnRotY, 0);
 
-            GameObject enemy = Instantiate(EnemyPref, spawnPos, spawnRot);
+            GameObject enemy = Instantiate(enemyRes, spawnPos, spawnRot);
             Enemies.Add(enemy);
         }
     }

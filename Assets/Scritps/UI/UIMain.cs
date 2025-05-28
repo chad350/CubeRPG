@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIMain : MonoBehaviour
+public class UIMain : UIBase
 {
     // 체력 업데이트 - 체력바 이미지, 체력 글자
     [SerializeField] private Slider imgHp;
@@ -47,8 +47,7 @@ public class UIMain : MonoBehaviour
 
     public void OpenMenu()
     {
-        Time.timeScale = 0;
-        GameObject uiMenu = UIManager.Instance.uiMain.gameObject;
-        uiMenu.SetActive(true);
+        var uiPause = UIManager.Instance.GetUI<UIPause>();
+        uiPause.OpenUI();
     }
 }

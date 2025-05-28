@@ -2,29 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileManager : MonoBehaviour
+public class ProjectileManager : Singleton<ProjectileManager>
 {
-    public static ProjectileManager Instance;
-
-    public Projectile projectile;
-    public List<Projectile> projectileList;
-
-    public int initCount;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
+    private int initCount = 5;
+    private string projectilePrefName = "Projectile_1";
+    private List<Projectile> projectileList = new List<Projectile>();
+    
+    private Transform projectilePool;
+    
     // Start is called before the first frame update
-    void Start()
+    public void SetProjecctile()
     {
+        var pool = new GameObject("projectilePool");
+        projectilePool = pool.transform;
+        
+        projectileList.Clear();
         for (int i = 0; i < initCount; i++)
         {
-            Projectile p = Instantiate(projectile, transform);
-            projectileList.Add(p);
+            Projectile pRes = Resources.Load<Projectile>(projectilePrefName);
+            Projectile pObj = Instantiate(pRes, projectilePool);
+            projectileList.Add(pObj);
 
-            p.gameObject.SetActive(false);
+            pObj.gameObject.SetActive(false);
         }
     }
 
@@ -47,14 +46,15 @@ public class ProjectileManager : MonoBehaviour
             return p;
         }
 
-        return Instantiate(projectile);
+        Projectile pRes = Resources.Load<Projectile>(projectilePrefName);
+        return Instantiate(pRes);
     }
 
     public void ReturnProjectile(Projectile p)
     {
         // projectileList ¿˙¿Â
         projectileList.Add(p);
-        p.transform.SetParent(transform);
+        p.transform.SetParent(projectilePool);
         p.gameObject.SetActive(false);
     }
 }
